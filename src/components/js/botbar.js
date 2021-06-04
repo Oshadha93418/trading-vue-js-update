@@ -1,5 +1,6 @@
 import Const from "../../stuff/constants.js";
 import Utils from "../../stuff/utils.js";
+/* newly import */
 import math from "../../stuff/math.js";
 
 const { MINUTE15, MINUTE, HOUR, DAY, WEEK, MONTH, YEAR, MONTHMAP } = Const;
@@ -13,6 +14,7 @@ export default class Botbar {
     this.data = this.$p.sub;
     this.range = this.$p.range;
     this.layout = this.$p.layout;
+    /* newly added */
     this.interval = this.$p.interval;
     this.cursor = comp.$props.cursor;
 
@@ -23,6 +25,7 @@ export default class Botbar {
     this.listeners();
   }
 
+  /* newly added */
   listeners() {
     let mc = (this.mc = new Hammer.Manager(this.canvas));
     let T = Utils.is_mobile ? 10 : 0;
@@ -215,6 +218,7 @@ export default class Botbar {
   mouseout() {}
   mouseup() {}
   mousedown() {}
+  /* newly added */
   touch2mouse(e) {
     this.calc_offset();
     return {

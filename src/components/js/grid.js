@@ -7,6 +7,7 @@ import * as Hammer from "hammerjs";
 import Hamster from "hamsterjs";
 import Utils from "../../stuff/utils.js";
 import math from "../../stuff/math.js";
+/* newly added */
 import { off } from "hammerjs";
 
 // Grid is good.
@@ -44,6 +45,7 @@ export default class Grid {
     let T = Utils.is_mobile ? 10 : 0;
     mc.add(
       new Hammer.Pan({
+        /* newly added */
         direction: Hammer.DIRECTION_ALL,
         threshold: T,
       })

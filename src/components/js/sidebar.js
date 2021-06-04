@@ -248,9 +248,11 @@ export default class Sidebar {
 
     let range = this.y_range.slice();
     let delta = range[0] - range[1];
+    /* newly added */
     let upmrgn = this.layout.height / 4;
     let lwmrgn = this.layout.height - this.layout.height / 4;
 
+    /* newly added */
     if (!this.layout.grid.logScale) {
       if (this.drug.yc < upmrgn) {
         range[0] = range[0] + delta * zk * diff1;
