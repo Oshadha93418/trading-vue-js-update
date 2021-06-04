@@ -1,9 +1,7 @@
 import Const from "../../stuff/constants.js";
 import Utils from "../../stuff/utils.js";
-/* newly import */
-import math from "../../stuff/math.js";
 
-const { MINUTE15, MINUTE, HOUR, DAY, WEEK, MONTH, YEAR, MONTHMAP } = Const;
+const { MINUTE15, HOUR, DAY, WEEK, MONTH, YEAR, MONTHMAP } = Const;
 
 export default class Botbar {
   constructor(canvas, comp) {
@@ -25,7 +23,7 @@ export default class Botbar {
     this.listeners();
   }
 
-  /* newly added */
+  /* newly added  listn for actions*/
   listeners() {
     let mc = (this.mc = new Hammer.Manager(this.canvas));
     let T = Utils.is_mobile ? 10 : 0;
@@ -214,10 +212,10 @@ export default class Botbar {
     return false;
   }
 
-  mousemove() {}
-  mouseout() {}
-  mouseup() {}
-  mousedown() {}
+  mousemove() { }
+  mouseout() { }
+  mouseup() { }
+  mousedown() { }
   /* newly added */
   touch2mouse(e) {
     this.calc_offset();
@@ -225,7 +223,7 @@ export default class Botbar {
       original: e.srcEvent,
       layerX: e.center.x + this.offset_x,
       layerY: e.center.y + this.offset_y,
-      preventDefault: function() {
+      preventDefault: function () {
         this.original.preventDefault();
       },
     };
@@ -238,7 +236,7 @@ export default class Botbar {
     this.ctx.lineTo(this.layout.width, 0.5);
     this.ctx.stroke();
   }
-
+  // this is use to get mouse drag
   mousedrag(x) {
     let dt = (this.drug.t * (this.drug.x - x)) / this.layout.botbar.width;
     let lftmrgn = this.layout.botbar.width / 4;
@@ -251,9 +249,6 @@ export default class Botbar {
     } else {
       this.range[0] = this.drug.r[0] + dt;
     }
-
-    //
-
     this.change_range();
   }
 
@@ -298,7 +293,7 @@ export default class Botbar {
     // somewhere here. Still will hurt the sidebar & bottombar
     this.comp.$emit("range-changed", range);
   }
-
+  // this is use whe touch pad use to scroll or zoom
   trackpad_scroll(event) {
     let dt = this.range[1] - this.range[0];
 

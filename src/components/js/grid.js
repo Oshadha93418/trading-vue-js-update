@@ -400,7 +400,7 @@ export default class Grid {
     let k = this.interval / 1000;
     let diff = delta * k * this.data.length;
     let tl = this.comp.config.ZOOM_MODE === "tl";
-
+    // in here we change range when zoom
     if (event.originalEvent.ctrlKey || tl) {
       let offset = event.originalEvent.offsetX;
       let diff1 = (offset / (this.canvas.width - 1)) * diff;
@@ -410,7 +410,6 @@ export default class Grid {
     } else {
       let offset = event.originalEvent.offsetX;
       let diff1 = (offset / (this.canvas.width)) * diff;
-      let diff2 = diff - diff1;
       this.range[0] -= diff1;
     }
 
@@ -437,7 +436,7 @@ export default class Grid {
     let d$ = this.layout.$_hi - this.layout.$_lo;
     d$ *= (this.drug.y - y) / this.layout.height;
     let offset = this.drug.o + d$;
-
+//  make mouse drag 
     let ls = this.layout.grid.logScale;
     if (ls && this.drug.y_r) {
       let dy = this.drug.y - y;

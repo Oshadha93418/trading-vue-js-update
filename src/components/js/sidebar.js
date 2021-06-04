@@ -43,9 +43,6 @@ export default class Sidebar {
   }
 
   listeners() {
-    // this.hm = Hamster(this.canvas)
-    // this.hm.wheel((event, delta) => this.mousezoom(-delta * 50, event))
-
     let mc = (this.mc = new Hammer.Manager(this.canvas));
     mc.add(
       new Hammer.Pan({
@@ -252,7 +249,7 @@ export default class Sidebar {
     let upmrgn = this.layout.height / 4;
     let lwmrgn = this.layout.height - this.layout.height / 4;
 
-    /* newly added */
+    /* newly added set range */
     if (!this.layout.grid.logScale) {
       if (this.drug.yc < upmrgn) {
         range[0] = range[0] + delta * zk * diff1;
@@ -270,7 +267,6 @@ export default class Sidebar {
       // Use old mapping to get a new range
       let f = (y) => math.exp((y - this.drug.B) / this.drug.A);
 
-      let copy = range.slice();
       range[0] = f(new_hi);
       range[1] = f(new_lo);
     }
@@ -278,34 +274,6 @@ export default class Sidebar {
     return range;
   }
 
-  // calc_scroll_range(diff1 = 1, diff2 = 1) {
-  //     let z = this.zoom
-  //     console.log(this.zoom)
-  //     let zk = (1 / z - 1) / 2
-
-  //     let range = this.y_range.slice()
-  //     let delta = range[0] - range[1]
-
-  //     if (!this.layout.grid.logScale) {
-  //         range[0] = range[0] + delta * zk * diff1
-  //         range[1] = range[1] - delta * zk * diff2
-  //     } else {
-
-  //         let py_mid = this.layout.height / 2
-  //         let new_hi = py_mid + py_mid * (1 / z)
-  //         let new_lo = py_mid - py_mid * (1 / z)
-
-  //         // Use old mapping to get a new range
-  //         let f = y => math.exp((y - this.drug.B) / this.drug.A)
-
-  //         let copy = range.slice()
-  //         range[0] = f(new_hi)
-  //         range[1] = f(new_lo)
-
-  //     }
-
-  //     return range
-  // }
 
   rezoom_range(delta, diff1, diff2) {
     if (!this.$p.y_transform || this.$p.y_transform.auto) return;
@@ -346,12 +314,11 @@ export default class Sidebar {
     if (this.mc) this.mc.destroy();
   }
 
-  mousemove() {}
-  mouseout() {}
-  mouseup() {}
+  mousemove() { }
+  mouseout() { }
+  mouseup() { }
   mousedown(event) {
     if (Utils.is_mobile) return;
-    // this.propagate("mousedown", event);
     this.comp.$emit("cursor-locked", true);
     if (event.defaultPrevented) return;
     this.comp.$emit("custom-event", {
@@ -375,50 +342,4 @@ export default class Sidebar {
       }
     }
   }
-
-  // mousezoom(delta, event) {
-  //     // TODO: for mobile
-  //     if (this.wmode !== 'pass') {
-  //         if (this.wmode === 'click' && !this.$p.meta.activated) {
-  //             return
-  //         }
-  //         event.originalEvent.preventDefault()
-  //         event.preventDefault()
-  //     }
-
-  //     event.deltaY = event.deltaY || Utils.get_deltaY(event)
-
-  //     if (this.trackpad) delta *= 0.032
-  //     delta = Utils.smart_wheel(delta)
-  //     // TODO: mouse zooming is a little jerky,
-  //     // needs to follow f(mouse_wheel_speed) and
-  //     // if speed is low, scroll shoud be slower
-  //     if (delta < 0 && this.data.length <= this.MIN_ZOOM) return
-  //     if (delta > 0 && this.data.length > this.MAX_ZOOM) return
-
-  //     this.y_range = [
-  //         this.layout.$_hi,
-  //         this.layout.$_lo
-  //     ]
-
-  //     let k = this.interval / 1000
-  //     let diff = delta * k
-  //     let offset = event.originalEvent.offsetY
-  //     let diff1 = offset / (this.canvas.height - 1) * 2
-  //     let diff2 = 2 - diff1
-
-  //     this.range[0] -= diff
-
-  //     this.zoom = Utils.clamp(diff, 0.005, 100)
-
-  //     this.comp.$emit('sidebar-transform', {
-  //         grid_id: this.id,
-  //         zoom: this.zoom,
-  //         auto: false,
-  //         range: this.calc_scroll_range(diff1, diff2),
-  //         drugging: true
-  //     })
-  //     this.update()
-
-  // }
 }

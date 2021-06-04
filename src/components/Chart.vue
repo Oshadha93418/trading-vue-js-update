@@ -19,6 +19,7 @@
       v-on:legend-button-click="legend_button_click"
     >
     </grid-section>
+    <!-- add botbar dragable -->
     <botbar
       v-bind="botbar_props"
       v-on:range-changed="range_changed"
