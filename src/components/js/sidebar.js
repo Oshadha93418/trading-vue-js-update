@@ -43,6 +43,9 @@ export default class Sidebar {
   }
 
   listeners() {
+    // this.hm = Hamster(this.canvas)
+    // this.hm.wheel((event, delta) => this.mousezoom(-delta * 50, event))
+
     let mc = (this.mc = new Hammer.Manager(this.canvas));
     mc.add(
       new Hammer.Pan({
@@ -230,10 +233,11 @@ export default class Sidebar {
   }
 
   calc_zoom(event) {
-    let d = this.drug.y - event.center.y;
+    // let d = event.center.y - this.drug.y;
+    let d = this.drug.y - event.center.y
     let speed = d > 0 ? 3 : 1;
     let k = 1 + (speed * d) / this.layout.height;
-    return Utils.clamp(this.drug.z * k, 0.005, 100);
+    return Utils.clamp(this.drug.z * k, 0.05, 100);
   }
 
   // Not the best place to calculate y-range but
@@ -241,16 +245,15 @@ export default class Sidebar {
   // date
   calc_range(diff1 = 1, diff2 = 1) {
     let z = this.zoom / this.drug.z;
-    let zk = (1 / z - 1) / 2;
+    let zk = ((1 / z) - 1) / 2;
 
     let range = this.y_range.slice();
     let delta = range[0] - range[1];
-    /* newly added */
     let upmrgn = this.layout.height / 4;
     let lwmrgn = this.layout.height - this.layout.height / 4;
 
-    /* newly added set range */
     if (!this.layout.grid.logScale) {
+      // check uper level and lower level and change range
       if (this.drug.yc < upmrgn) {
         range[0] = range[0] + delta * zk * diff1;
       } else if (this.drug.yc > lwmrgn) {
@@ -271,9 +274,11 @@ export default class Sidebar {
       range[1] = f(new_lo);
     }
 
+
     return range;
   }
 
+  
 
   rezoom_range(delta, diff1, diff2) {
     if (!this.$p.y_transform || this.$p.y_transform.auto) return;
@@ -319,6 +324,7 @@ export default class Sidebar {
   mouseup() { }
   mousedown(event) {
     if (Utils.is_mobile) return;
+    // this.propagate("mousedown", event);
     this.comp.$emit("cursor-locked", true);
     if (event.defaultPrevented) return;
     this.comp.$emit("custom-event", {
@@ -342,4 +348,6 @@ export default class Sidebar {
       }
     }
   }
+
+  
 }

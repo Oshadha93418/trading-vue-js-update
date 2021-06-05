@@ -1,7 +1,8 @@
 import Const from "../../stuff/constants.js";
 import Utils from "../../stuff/utils.js";
+import math from "../../stuff/math.js";
 
-const { MINUTE15, HOUR, DAY, WEEK, MONTH, YEAR, MONTHMAP } = Const;
+const { MINUTE15, MINUTE, HOUR, DAY, WEEK, MONTH, YEAR, MONTHMAP } = Const;
 
 export default class Botbar {
   constructor(canvas, comp) {
@@ -12,7 +13,6 @@ export default class Botbar {
     this.data = this.$p.sub;
     this.range = this.$p.range;
     this.layout = this.$p.layout;
-    /* newly added */
     this.interval = this.$p.interval;
     this.cursor = comp.$props.cursor;
 
@@ -22,8 +22,7 @@ export default class Botbar {
     //call lsitners
     this.listeners();
   }
-
-  /* newly added  listn for actions*/
+  // this use to listen mouse events in botbar/x axis
   listeners() {
     let mc = (this.mc = new Hammer.Manager(this.canvas));
     let T = Utils.is_mobile ? 10 : 0;
@@ -212,18 +211,18 @@ export default class Botbar {
     return false;
   }
 
-  mousemove() { }
-  mouseout() { }
-  mouseup() { }
-  mousedown() { }
-  /* newly added */
+  mousemove() {}
+  mouseout() {}
+  mouseup() {}
+  mousedown() {}
+  // convert touchpad actions to mouse
   touch2mouse(e) {
     this.calc_offset();
     return {
       original: e.srcEvent,
       layerX: e.center.x + this.offset_x,
       layerY: e.center.y + this.offset_y,
-      preventDefault: function () {
+      preventDefault: function() {
         this.original.preventDefault();
       },
     };
@@ -236,12 +235,12 @@ export default class Botbar {
     this.ctx.lineTo(this.layout.width, 0.5);
     this.ctx.stroke();
   }
-  // this is use to get mouse drag
+ // this is code add for scall x axis or bot bar
   mousedrag(x) {
     let dt = (this.drug.t * (this.drug.x - x)) / this.layout.botbar.width;
     let lftmrgn = this.layout.botbar.width / 4;
     let rghtmrgn = this.layout.botbar.width - this.layout.botbar.width / 4;
-
+    // check where dragpoint and calculate range 
     if (this.drug.x < lftmrgn) {
       this.range[0] = this.drug.r[0] + dt;
     } else if (this.drug.x > rghtmrgn) {
@@ -249,6 +248,9 @@ export default class Botbar {
     } else {
       this.range[0] = this.drug.r[0] + dt;
     }
+
+    // after change range need to update ui then call this
+
     this.change_range();
   }
 
@@ -293,7 +295,8 @@ export default class Botbar {
     // somewhere here. Still will hurt the sidebar & bottombar
     this.comp.$emit("range-changed", range);
   }
-  // this is use whe touch pad use to scroll or zoom
+
+  // use for touchpad scroll
   trackpad_scroll(event) {
     let dt = this.range[1] - this.range[0];
 
@@ -302,6 +305,7 @@ export default class Botbar {
 
     this.change_range();
   }
+
   destroy() {
     if (this.mc) this.mc.destroy();
   }
